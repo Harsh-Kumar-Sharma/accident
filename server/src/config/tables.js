@@ -8,4 +8,5 @@ module.exports = {
   USERS: 'users',
   CUSTOMERS: 'customers',
   LICENSES: 'licenses',
+  ACCIDENT_DATA:'accident_data'
 };

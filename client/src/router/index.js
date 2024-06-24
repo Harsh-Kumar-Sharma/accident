@@ -6,6 +6,15 @@ import DefaultLayout from '@/layouts/DefaultLayout'
 const routes = [
   {
     path: '/',
+    redirect: '/login', // Redirect '/' to '/login'
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/pages/Login.vue'),
+  },
+  {
+    path: '/dashboard',
     name: 'Home',
     component: DefaultLayout,
     redirect: '/dashboard',
@@ -278,7 +287,7 @@ const routes = [
     redirect: '/pages/404',
     name: 'Pages',
     component: {
-      render() {
+      render() {Pages
         return h(resolveComponent('router-view'))
       },
     },
@@ -292,11 +301,6 @@ const routes = [
         path: '500',
         name: 'Page500',
         component: () => import('@/views/pages/Page500'),
-      },
-      {
-        path: 'login',
-        name: 'Login',
-        component: () => import('@/views/pages/Login'),
       },
       {
         path: 'register',
