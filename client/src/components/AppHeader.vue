@@ -27,7 +27,7 @@ onMounted(() => {
       <CHeaderToggler @click="sidebar.toggleVisible()" style="margin-inline-start: -14px">
         <CIcon icon="cil-menu" size="lg" />
       </CHeaderToggler>
-      <CHeaderNav class="d-none d-md-flex">
+      <!-- <CHeaderNav class="">
         <CNavItem>
           <CNavLink href="/dashboard"> Dashboard </CNavLink>
         </CNavItem>
@@ -37,8 +37,8 @@ onMounted(() => {
         <CNavItem>
           <CNavLink href="#">Settings</CNavLink>
         </CNavItem>
-      </CHeaderNav>
-      <CHeaderNav class="ms-auto">
+      </CHeaderNav> -->
+      <!-- <CHeaderNav class="ms-auto">
         <CNavItem>
           <CNavLink href="#">
             <CIcon icon="cil-bell" size="lg" />
@@ -54,7 +54,7 @@ onMounted(() => {
             <CIcon icon="cil-envelope-open" size="lg" />
           </CNavLink>
         </CNavItem>
-      </CHeaderNav>
+      </CHeaderNav> -->
       <CHeaderNav>
         <li class="nav-item py-1">
           <div class="vr h-100 mx-2 text-body text-opacity-75"></div>
@@ -101,8 +101,8 @@ onMounted(() => {
         <AppHeaderDropdownAccnt />
       </CHeaderNav>
     </CContainer>
-    <CContainer class="px-4" fluid>
+    <!-- <CContainer class="px-4" fluid>
       <AppBreadcrumb />
-    </CContainer>
+    </CContainer> -->
   </CHeader>
 </template>

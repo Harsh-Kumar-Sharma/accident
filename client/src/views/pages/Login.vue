@@ -16,6 +16,7 @@
                     <CFormInput
                       placeholder="Username"
                       autocomplete="username"
+                      v-model="username"
                     />
                   </CInputGroup>
                   <CInputGroup class="mb-4">
@@ -26,14 +27,15 @@
                       type="password"
                       placeholder="Password"
                       autocomplete="current-password"
+                      v-model="password"
                     />
                   </CInputGroup>
                   <CRow>
                     <CCol :xs="6">
-                      <CButton color="primary" class="px-4"> Login </CButton>
+                      <CButton color="primary" @click="handleSubmit" class="px-4"> Login </CButton>
                     </CCol>
                     <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0">
+                      <CButton color="link"  class="px-0">
                         Forgot password?
                       </CButton>
                     </CCol>
@@ -62,3 +64,41 @@
     </CContainer>
   </div>
 </template>
+
+<script>
+import { userPinaStore } from '@/stores/auth';
+import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const authStore = userPinaStore();
+    const username = ref('');
+    const password = ref('');
+    const error = ref('');
+    const router = useRouter();
+
+    const handleSubmit = async () => {
+      try {
+        await authStore.login({username:username.value, password:password.value});
+        router.push('/dashboard');
+      } catch (err) {
+        error.value = err.message;
+      }
+    };
+
+    const handleLogout = () => {
+      authStore.logout();
+    };
+
+
+    return {
+      username,
+      password,
+      error,
+      handleSubmit,
+      handleLogout,
+    };
+  },
+};
+</script>

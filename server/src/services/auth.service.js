@@ -2,6 +2,7 @@
 const bcrypt = require('bcryptjs');
 const { db } = require('../models');
 const logger = require('../config/logger');
+const { raw } = require('body-parser');
 
 /**
  * Login with username and password
@@ -10,12 +11,12 @@ const logger = require('../config/logger');
  * @returns {Promise<User>}
  */
 const login = async (username, password) => {
-  const loginRes = await db.logins.findOne({ where: { username } });
+  const loginRes = await db.logins.findOne({ where: { username },raw:true });
   if (loginRes == null) {
     throw new Error('Account with the username does not exist');
   }
 
-  const user = loginRes.dataValues;
+  const user = loginRes;
 
   // CHECK PASSWORD
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -33,11 +34,11 @@ const login = async (username, password) => {
   // await db.auth_logs.create({ last_login: new Date().toISOString(), user_id: user.user_id });
 
   // GET USER DETAILS
-  const userDetails = await db.users.findOne({ where: { id: user.user_id } });
-  const role = await db.user_role_mappings.findOne({ where: { user_id: user.user_id } });
-  const roleName = await db.roles.findOne({ where: { id: role.role_id } });
+  const userDetails = await db.users.findOne({ where: { id: user.user_id } ,raw:true});
+  const role = await db.user_role_mappings.findOne({ where: { user_id: user.user_id },raw:true });
+  const roleName = await db.roles.findOne({ where: { id: role.role_id },raw:true });
 
-  return { ...userDetails.dataValues, role: roleName.role_name };
+  return { ...userDetails, role: roleName.role_name };
 };
 
 /**
