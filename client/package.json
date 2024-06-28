@@ -26,11 +26,13 @@
     "@coreui/vue": "^5.1.0",
     "@coreui/vue-chartjs": "^3.0.0",
     "@popperjs/core": "^2.11.8",
+    "apexcharts": "^3.49.2",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "pinia": "^2.1.7",
     "simplebar-vue": "^2.3.5",
     "vue": "^3.4.28",
+    "vue-apexcharts": "^1.6.2",
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
