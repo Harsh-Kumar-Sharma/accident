@@ -29,6 +29,38 @@ const routes = [
           import(
             /* webpackChunkName: "dashboard" */ '@/views/dashboard/Dashboard.vue'
           ),
+      },
+      {
+        path: '/data-entry',
+        name: 'DATA ENTRY',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/data-entry/FromData.vue'
+          ),
+      },
+      {
+        path: '/response',
+        name: 'RESPONSE',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/response/Dashboard.vue'
+          ),
+      },
+      {
+        path: '/heat-map',
+        name: 'HEAT MAP',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/heat-map/Dashboard.vue'
+          ),
+      },
+      {
+        path: '/reason',
+        name: 'REASON',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/reason/Dashboard.vue'
+          ),
       }
     ],
   },

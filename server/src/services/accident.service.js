@@ -79,6 +79,23 @@ const insertAccidentData = async () => {
   return true;
 };
 
+const createAccident = async(body)=>{
+console.log(body);
+}
+
+const getAccidentData= async(body,page) => {
+  const limit = 10;
+  const offset = (page - 1) * limit;
+  const data = await db.accident_data.findAll({
+    limit,
+    offset,
+  });
+return data;
+}
+
+
 module.exports = {
   insertAccidentData,
+  createAccident,
+  getAccidentData
 };

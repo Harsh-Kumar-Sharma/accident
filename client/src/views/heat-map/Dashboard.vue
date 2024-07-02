@@ -14,24 +14,24 @@
     <CCol :md="6" class="mb-4">
       <CForm>
         <CFormSelect aria-label="Default select example">
-          <option value="">Select Reason Of Accidents</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-        </CFormSelect>
+  <option value="">Select Reason Of Accidents</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+</CFormSelect>
       </CForm>
     </CCol>
     <CCol :md="6" class="mb-4">
       <CForm>
         <CFormSelect aria-label="Default select example">
-          <option value="">Select Location Zone</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-        </CFormSelect>
+  <option value="">Select Location Zone</option>
+  <option value="1">One</option>
+  <option value="2">Two</option>
+</CFormSelect>
       </CForm>
     </CCol>
   </CRow>
-  <hr>
-  <!-- Dashboard design -->
+<hr>
+<!-- Dashboard design -->
   <CRow>
     <CCol :md="6" class="mb-4">
       <CCard>
@@ -43,7 +43,7 @@
     </CCol>
     <CCol :md="6" class="mb-4">
       <CCard>
-        <CCardHeader>No. Of Persons Injured</CCardHeader>
+        <CCardHeader>Accident By Month</CCardHeader>
         <CCardBody>
           <secoundBarChart />
         </CCardBody>

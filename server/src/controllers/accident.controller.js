@@ -9,6 +9,19 @@ const insertAccident = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(data);
 });
 
+
+const createAccident = catchAsync(async (req, res) => {
+  const data = await accidentService.createAccident(req.body);
+  res.status(httpStatus.OK).send(data);
+});
+
+const getAllAccident = catchAsync(async (req, res) => {
+  const data = await accidentService.getAccidentData(req.body,req.params.page);
+  res.status(httpStatus.OK).send(data);
+});
+
 module.exports = {
     insertAccident,
+    createAccident,
+    getAllAccident
 };
