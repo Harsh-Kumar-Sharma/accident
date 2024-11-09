@@ -1,3 +1,4 @@
+
 export const CLIENT_URL = "http://localhost:8080";
 export const BASE_URL = "http://localhost:3000";
 export const SOCKET_URL = "http://localhost:3000";
@@ -8,4 +9,13 @@ export const API_ROUTES = {
     LOGOUT: "/api/auth/logout",
     SESSION: "/api/auth/session",
   },
+  LOCATION_ZONE: {
+    GET:'/api/location/zone/get'
+  },
+  REASONS_OF_ACCIDENTS:{
+    GET:'/api/reason/get'
+  },
+  Graph:{
+    DASHBOARD:'/api/accident/getDashboardData'
+  }
 };

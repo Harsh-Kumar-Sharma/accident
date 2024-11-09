@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeMount } from 'vue'
-import { useColorModes } from '@coreui/vue'
+import { useColorModes } from '@coreui/vue-pro'
 
 import { useThemeStore } from '@/stores/theme.js'
 

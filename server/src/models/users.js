@@ -1,7 +1,7 @@
 const { USERS } = require('../config/tables');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const Users = sequelize.define(
     USERS,
     {
       id: {
@@ -10,14 +10,14 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      email: {
-        type: DataTypes.STRING,
-      },
       first_name: {
         type: DataTypes.STRING,
       },
 
       last_name: {
+        type: DataTypes.STRING,
+      },
+      email: {
         type: DataTypes.STRING,
       },
       mobile: {
@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       created_at: {
         type: DataTypes.DATE,
       },
+      updated_at: {
+        type: DataTypes.DATE,
+      },
     },
     {
       sequelize,
@@ -36,4 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true,
     }
   );
+  Users.associate = function (models) {
+    Users.hasOne(models.logins, { foreignKey: 'user_id' });
+  };
+
+  return Users;
 };

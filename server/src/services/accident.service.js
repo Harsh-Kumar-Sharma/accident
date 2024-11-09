@@ -1,4 +1,4 @@
-const { db } = require('../models');
+const { db, sequelize } = require('../models');
 
 const data = require('./accident');
 
@@ -93,9 +93,62 @@ const getAccidentData= async(body,page) => {
 return data;
 }
 
+const getDataforDashboard = async (body)=>{
+ 
+      let condition = '';
+      const currentYear = new Date().getFullYear();
+      const startDate = `${currentYear}-01-01`; // Start of the jan 1st
+      const endDate = `${currentYear}-12-31`; // Current year's December 31st
+  
+      if (body.fromDate && body.toDate && !String(body.fromDate).includes('1970') && !String(body.toDate).includes('1970')) {
+        condition = ` accident_date BETWEEN '${body.fromDate}' AND '${body.toDate}'`;
+      } else {
+        condition = ` accident_date BETWEEN '${startDate}' AND '${endDate}'`;
+      }
+      if (body.reasonOfAccident && body.reasonOfAccident !== 'null'){
+        condition += `AND reason_of_accidents = '${body.reasonOfAccident}'`;
+      }
+      if (body.locationZone && body.locationZone !== 'null'){
+        condition += `AND location_zone = '${body.locationZone}'`;
+      }
+      const query = `
+        SELECT
+          DATE_FORMAT(accident_date, '%m') AS accident_month,
+          SUM(CASE WHEN fatal_injury THEN fatal_injury ELSE 0 END) AS fatal_injury,
+          SUM(CASE WHEN major_injury THEN major_injury ELSE 0 END) AS major_injury,
+          SUM(CASE WHEN minor_injury THEN minor_injury ELSE 0 END) AS minor_injury
+        FROM accident.accident_data
+        WHERE ${condition}
+        GROUP BY accident_month;
+      `;
+      // Execute the query using sequelize.query or your preferred database client
+      const sumOfInjury = await sequelize.query(query);
+
+      const query1 = `SELECT
+      DATE_FORMAT(accident_date, '%m') AS accident_month,
+      Count(*) AS CountData
+    FROM accident.accident_data
+    WHERE ${condition}
+    GROUP BY accident_month;`
+
+    const countAccident = await sequelize.query(query1);
+
+    const query2 =`SELECT
+    SUM(CASE WHEN fatal_injury THEN fatal_injury ELSE 0 END) AS fatal_injury,
+    SUM(CASE WHEN major_injury THEN major_injury ELSE 0 END) AS major_injury,
+    SUM(CASE WHEN minor_injury THEN minor_injury ELSE 0 END) AS minor_injury,
+    Count(*) AS total_accident
+  FROM accident.accident_data WHERE ${condition}`
+
+  const cardData = await sequelize.query(query2);
+  
+      return {sumInjury:sumOfInjury[0],CountData:countAccident[0],cardData:cardData[0]};
+}
+
 
 module.exports = {
   insertAccidentData,
   createAccident,
-  getAccidentData
+  getAccidentData,
+  getDataforDashboard
 };

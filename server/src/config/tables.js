@@ -10,5 +10,9 @@ module.exports = {
   LICENSES: 'licenses',
   ACCIDENT_DATA:'accident_data',
   LOCATION_ZONE:'location_zone',
-  REASONS_OF_ACCIDENTS:'reasons_of_accidents'
+  REASONS_OF_ACCIDENTS:'reasons_of_accidents',
+  VEHICLE_TYPE:'vehicle_type',
+  VEHICLE_CATEGORY:'vehicle_category',
+  TIME_OF_DAY:'time_of_day',
+  SOURCE_OF_INFORMATION:'source_of_information'
 };

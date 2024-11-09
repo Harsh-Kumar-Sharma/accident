@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { accidentService} = require('../services');
+const { getDataforDashboard } = require('../services/accident.service');
 
 
 
@@ -20,8 +21,14 @@ const getAllAccident = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(data);
 });
 
+const getDashboardData = catchAsync(async (req, res) => {
+  const data = await accidentService.getDataforDashboard(req.body);
+  res.status(httpStatus.OK).send(data);
+});
+
 module.exports = {
     insertAccident,
     createAccident,
-    getAllAccident
+    getAllAccident,
+    getDashboardData
 };

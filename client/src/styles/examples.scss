@@ -2,9 +2,9 @@
 
 $enable-deprecation-messages: false !default;
 
-@import "@coreui/coreui/scss/functions";
-@import "@coreui/coreui/scss/variables";
-@import "@coreui/coreui/scss/mixins";
+@import "@coreui/coreui-pro/scss/functions";
+@import "@coreui/coreui-pro/scss/variables";
+@import "@coreui/coreui-pro/scss/mixins";
 
 .example {
   &:not(:first-child) {

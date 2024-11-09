@@ -1,27 +1,21 @@
-/* eslint-disable */
-const { LOGINS } = require('../config/tables');
+const { VEHICLE_CATEGORY } = require('../config/tables');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    LOGINS,
+    VEHICLE_CATEGORY,
     {
-      user_id: {
+      id: {
         type: DataTypes.NUMBER,
-      },
-      username: {
-        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
       },
-      is_logged_in: {
-        type: DataTypes.BOOLEAN,
-      },
-      password: {
+      vehicle_category:{
         type: DataTypes.STRING,
       },
-        status: {
+      vehicle_type: {
         type: DataTypes.STRING,
-      },
+      }
     },
     {
       sequelize,

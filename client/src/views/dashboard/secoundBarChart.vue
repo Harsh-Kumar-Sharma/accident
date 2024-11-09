@@ -6,7 +6,8 @@
 
 <script setup>
 import { CChartBar } from '@coreui/vue-chartjs'
-
+const props = defineProps(['data'])
+console.log(props.data)
 const data = {
   labels: [
     'January',

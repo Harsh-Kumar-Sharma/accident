@@ -19,21 +19,23 @@
   },
   "dependencies": {
     "@coreui/chartjs": "^4.0.0",
-    "@coreui/coreui": "^5.0.2",
+    "@coreui/coreui-pro": "^5.6.0",
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-vue": "2.0.0",
     "@coreui/utils": "^2.0.2",
-    "@coreui/vue": "^5.1.0",
     "@coreui/vue-chartjs": "^3.0.0",
+    "@coreui/vue-pro": "^5.7.0",
     "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.49.2",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "pinia": "^2.1.7",
     "simplebar-vue": "^2.3.5",
+    "sweetalert2": "^11.12.1",
     "vue": "^3.4.28",
     "vue-apexcharts": "^1.6.2",
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.3.3",
+    "vuejs-datetimepicker": "^1.1.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",

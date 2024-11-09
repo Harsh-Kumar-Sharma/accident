@@ -1,27 +1,30 @@
-/* eslint-disable */
-const { LOGINS } = require('../config/tables');
+const { TIME_OF_DAY } = require('../config/tables');
 
 module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
-    LOGINS,
+    TIME_OF_DAY,
     {
-      user_id: {
+      id: {
         type: DataTypes.NUMBER,
-      },
-      username: {
-        type: DataTypes.STRING,
         allowNull: false,
         primaryKey: true,
+        autoIncrement: true,
       },
-      is_logged_in: {
-        type: DataTypes.BOOLEAN,
-      },
-      password: {
+      time_of_day: {
         type: DataTypes.STRING,
       },
-        status: {
+      start_time: {
         type: DataTypes.STRING,
       },
+      end_time: {
+        type: DataTypes.STRING,
+      },
+      value_from: {
+        type: DataTypes.FLOAT,
+      },
+      value_to: {
+        type: DataTypes.FLOAT,
+      }
     },
     {
       sequelize,

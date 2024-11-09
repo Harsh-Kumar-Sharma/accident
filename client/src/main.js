@@ -4,7 +4,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-import CoreuiVue from '@coreui/vue'
+import CoreuiVue from '@coreui/vue-pro'
 import CIcon from '@coreui/icons-vue'
 import { iconsSet as icons } from '@/assets/icons'
 import DocsExample from '@/components/DocsExample'

@@ -7,20 +7,20 @@ const wait = setInterval(() => {
     const app = require('./app');
     const config = require('./config/config');
     const logger = require('./config/logger');
-    const { Redis } = require('./services/redis.service')
+    // const { Redis } = require('./services/redis.service')
 
     const server = app.listen(config.port, async () => {
       try {
         logger.info(`HTTP Server start on port: ${config.port}`);
 
-        // Connect Redis
-        const redis = new Redis(config.redis)
-        await redis.Connect()
-        global.redis = redis
-        logger.info(`Redis connected: ${config.redis.url}`);
+        // // Connect Redis
+        // const redis = new Redis(config.redis)
+        // await redis.Connect()
+        // global.redis = redis
+        // logger.info(`Redis connected: ${config.redis.url}`);
 
-        // Start caching
-        redis.StartCacheService()
+        // // Start caching
+        // redis.StartCacheService()
 
       } catch (e) {
         logger.info(e);
