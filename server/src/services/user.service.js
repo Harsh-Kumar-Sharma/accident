@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
 const { db } = require('../models');
 
 
