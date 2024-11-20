@@ -1,7 +1,7 @@
 const { USER_ROLE_MAPPINGS } = require('../config/tables');
 
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define(
+  const userRoleMappings = sequelize.define(
     USER_ROLE_MAPPINGS,
     {
       id: {
@@ -24,4 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       freezeTableName: true,
     }
   );
+
+  userRoleMappings.associate = function (models) {
+    userRoleMappings.belongsTo(models.users, { foreignKey: 'user_id' });
+    userRoleMappings.belongsTo(models.roles, { foreignKey: 'role_id' });
+  };
+
+  return userRoleMappings
 };

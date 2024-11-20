@@ -4,12 +4,12 @@ const { db } = require('../models');
 
 
 
-const CreateNewUser = async (record) => {
+const CreateNewUser = async (payload) => {
   // Pre-validation
   const existsUser = await db.users.findOne({
     where: {
-      email: record.email,
-    },
+      email: payload.email,
+    },raw:true
   });
 
   if (existsUser) {
@@ -17,37 +17,40 @@ const CreateNewUser = async (record) => {
   }
   const existsUsername = await db.logins.findOne({
     where: {
-      username: record.username,
-    },
+      username: payload.username,
+    },raw:true
   });
   if (existsUsername) {
     throw new Error('User already exists with the same username');
   }
   // Create role mapping in USER_ROLE_MAPPINGS table
-  const role = await db.roles.findOne({ where: { id: record.role_id } });
-  if (role == null) throw new Error('Role does not exists');
+  const role = await db.roles.findOne({ where: { id: payload.roleId },raw:true });
+  if (!role) throw new Error('Role does not exists');
 
  
   // Create user in the "users" table
   const userRes = await db.users.create({
-    first_name: record.first_name,
-    last_name: record.last_name,
-    email: record.email,
-    mobile_number: record.mobile_number,
+    first_name: payload.firstName,
+    last_name: payload.lastName,
+    email: payload.email,
+    mobile: payload.mobile,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   });
 
-  const encPassword = await bcrypt.hash(record.password, 8);
+  const plainUser = userRes.get({ plain: true });
+
+  const encPassword = await bcrypt.hash(payload.password, 8);
   await db.logins.create({
-    user_id: userRes.dataValues.id,
-    username: record.username,
+    user_id: plainUser.id,
+    username: payload.username,
     password: encPassword,
     is_logged_in: false,
+    status:'active'
   });
 
   await db.user_role_mappings.create({
-    user_id: userRes.dataValues.id,
+    user_id: plainUser.id,
     role_id: role.id,
   });
 
@@ -59,7 +62,18 @@ const getUsers = async (page) => {
   const limit = 50;
   const offset = (page - 1) * limit;
   const getUsers = await db.users.findAll({
-    include: [{ attributes:['username','status'] ,model: db.logins }],
+    include: [{ attributes:['username','status'] ,model: db.logins }, {
+      required: true,
+      model: db.user_role_mappings,
+      attributes: ['role_id'],
+      include: [
+        {
+          required: true,
+          model: db.roles,
+          attributes: ['role_name'],
+        },
+      ],
+    }],
     limit,
     offset,
   });
@@ -82,10 +96,10 @@ const updateUser = async (id, updatedData) => {
     throw new Error('User not found');
   }
 
-  user.first_name = updatedData.first_name;
-  user.last_name = updatedData.last_name;
-  user.role_id = updatedData.role_id;
-  user.mobile_number = updatedData.mobile_number;
+  user.first_name = updatedData.firstName;
+  user.last_name = updatedData.lastName;
+  user.role_id = updatedData.roleId;
+  user.mobile = updatedData.mobile;
   user.email = updatedData.email;
   user.updated_at = new Date().toISOString();
 
@@ -94,7 +108,7 @@ const updateUser = async (id, updatedData) => {
   if (login) {
     login.username = updatedData.username;
     login.password = updatedData.password ? await bcrypt.hash(updatedData.password, 8) : login.password;
-    login.updated_at = new Date().toISOString();
+    login.status = updatedData.status
     await login.save();
   }
 
@@ -115,12 +129,17 @@ const deleteUser = async (userId) => {
   // Delete user from logins
   await db.logins.destroy({ where: { user_id: userId } });
 
-  // Delete user from admin_user_role mappings
-  await db.admin_user_role_mappings.destroy({ where: { user_id: userId } });
+  // Delete user from user_role mappings
+  await db.user_role_mappings.destroy({ where: { user_id: userId } });
 
 
   return { message: 'User deleted successfully' };
 };
+
+const getAllRoles = async ()=>{
+  const roleData = await db.roles.findAll({});
+  return roleData
+}
 
 module.exports = {
   CreateNewUser,
@@ -128,4 +147,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getAllRoles
 };

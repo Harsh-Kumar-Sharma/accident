@@ -17,5 +17,12 @@ export const API_ROUTES = {
   },
   Graph:{
     DASHBOARD:'/api/accident/getDashboardData'
+  },
+  users:{
+    create:'/api/user/createUser',
+    getRoles:'/api/user/getRoles',
+    getUser:'/api/user',
+     update: (id)=>{ return `/api/user/update/${id}`},
+      delete:(id)=>{ return `/api/user/${id}`}
   }
 };

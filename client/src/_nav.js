@@ -38,38 +38,33 @@ export default [
   {
     component: 'CNavGroup',
     name: 'Setting',
-    to: '/pages',
+    to: '/settings',
     icon: 'cil-settings',
     items: [
       {
         component: 'CNavItem',
         name: 'Source Of Information',
-        to: '/pages/login',
+        to: '/settings/source_of_information',
       },
       {
         component: 'CNavItem',
         name: 'Reasons Of Accidents',
-        to: '/pages/register',
+        to: '/settings/reasons_of_accidents',
       },
       {
         component: 'CNavItem',
         name: 'time_of_day',
-        to: '/pages/404',
+        to: '/settings/time_of_day',
       },
       {
         component: 'CNavItem',
         name: 'Vehicle Category',
-        to: '/pages/500',
+        to: '/settings/vehicle_category',
       },
       {
         component: 'CNavItem',
         name: 'Vehicle Type',
-        to: '/pages/register',
-      },
-      {
-        component: 'CNavItem',
-        name: 'Time Of Day',
-        to: '/pages/404',
+        to: '/settings/vehicle_type',
       }
     ],
   },

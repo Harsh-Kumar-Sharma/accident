@@ -1,5 +1,35 @@
 <script setup>
-import avatar from '@/assets/images/avatars/8.jpg'
+import avatar from '@/assets/images/avatars/8.jpg';
+import { userPinaStore } from '@/stores/auth';
+import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import Swal from 'sweetalert2'
+
+ const authStore = userPinaStore();
+   const router = useRouter();
+
+const logout = async ()=>{
+  try{
+   await authStore.logout();
+     router.push('/');
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "You are logout successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
+  }catch(error){
+  Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Something is wrong to logout",
+          showConfirmButton: false,
+          timer: 1500
+        });
+  }
+}
+
 </script>
 
 <template>
@@ -15,7 +45,7 @@ import avatar from '@/assets/images/avatars/8.jpg'
         Account
       </CDropdownHeader>
       <CDropdownItem> <CIcon icon="cil-user" /> Profile </CDropdownItem>
-      <CDropdownItem> <CIcon icon="cil-lock-locked" /> Logout </CDropdownItem>
+      <CDropdownItem @click="logout" > <CIcon icon="cil-lock-locked" /> Logout </CDropdownItem>
     </CDropdownMenu>
   </CDropdown>
 </template>

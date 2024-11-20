@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Users.associate = function (models) {
     Users.hasOne(models.logins, { foreignKey: 'user_id' });
+    Users.hasOne(models.user_role_mappings, { foreignKey: 'user_id' });
   };
 
   return Users;

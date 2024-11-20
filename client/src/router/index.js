@@ -69,6 +69,63 @@ const routes = [
           import(
             /* webpackChunkName: "dashboard" */ '@/views/user.vue'
           ),
+      },
+      {
+        path: '/settings',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/settings/SourceOfInformation.vue'
+          ),
+        name: 'Settings',
+        children: [
+          {
+            path: 'source_of_information', // Matches /settings/source_of_information
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ '@/views/settings/SourceOfInformation.vue'
+              ),
+            name: 'Source Of Information',
+          },
+          {
+            path: 'reasons_of_accidents', // Matches /settings/reasons_of_accidents
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ '@/views/settings/ReasonsOfAccidents.vue'
+              ),
+            name: 'Reasons Of Accidents',
+          },
+          {
+            path: 'time_of_day', // Matches /settings/time_of_day
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ '@/views/settings/TimeOfDay.vue'
+              ),
+            name: 'Time Of Day',
+          },
+          {
+            path: 'vehicle_category', // Matches /settings/vehicle_category
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleCategory.vue'
+              ),
+            name: 'Vehicle Category',
+          },
+          {
+            path: 'vehicle_type', // Matches /settings/vehicle_type
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleType.vue'
+              ),
+            name: 'Vehicle Type',
+          },
+        ],
+      },
+      {
+        path: '/:pathMatch(.*)*', // Use pathMatch to handle all undefined routes
+        component: () =>
+          import(
+            /* webpackChunkName: "page404" */ '@/views/pages/Page404.vue'
+          ),
       }
     ],
   },

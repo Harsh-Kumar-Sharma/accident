@@ -11,7 +11,7 @@ const createUser = catchAsync(async (req, res) => {
 const getUsers = catchAsync(async (req, res) => {
     const { page } = req.query;
     const getusers = await userService.getUsers(page?page:1);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: {
         getusers,
@@ -22,7 +22,7 @@ const getUsers = catchAsync(async (req, res) => {
   // get user by Id
   const getUserById = catchAsync(async (req, res) => {
     const getuserbyid = await userService.getUserById(req.params.id);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: {
         getuserbyid,
@@ -33,7 +33,7 @@ const getUsers = catchAsync(async (req, res) => {
   // update user
   const updateUser = catchAsync(async (req, res) => {
     const updatedUser = await userService.updateUser(req.params.id, req.body);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: {
         user: updatedUser,
@@ -45,17 +45,28 @@ const getUsers = catchAsync(async (req, res) => {
   const deleteUser = catchAsync(async (req, res) => {
     const userId = req.params.id;
     const deletedUser = await userService.deleteUser(userId);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: {
         user: deletedUser,
       },
     });
   });
+
+  const getAllRoles = catchAsync(async (req, res) => {
+    const data = await userService.getAllRoles();
+    res.status(200).json({
+      status: 'success',
+      data: data,
+    });
+  });
+
+
 module.exports = {
     createUser,
     getUsers,
     getUserById,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllRoles
 };
