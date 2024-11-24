@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 
-import { logo } from '@/assets/brand/logo'
+
 import { sygnet } from '@/assets/brand/sygnet'
 import { AppSidebarNav } from '@/components/AppSidebarNav.js'
 import { useSidebarStore } from '@/stores/sidebar.js'
@@ -19,12 +19,12 @@ const sidebar = useSidebarStore()
     @visible-change="(value) => sidebar.toggleVisible(value)"
   >
     <CSidebarHeader class="border-bottom">
-      <RouterLink custom to="/" v-slot="{ href, navigate }">
-        <CSidebarBrand v-bind="$attrs" as="a" :href="href" @click="navigate">
-          <CIcon custom-class-name="sidebar-brand-full" :icon="logo" :height="32" />
-          <CIcon custom-class-name="sidebar-brand-narrow" :icon="sygnet" :height="32" />
-        </CSidebarBrand>
-      </RouterLink>
+   <div class="row d-flex justify-content-center">
+  <c-sidebar-brand>
+    <img src="@/assets/images/logo.png" alt="SIMS Logo" :height="50"  />
+    <span class="align-middle ml-4">Incident Management</span>
+  </c-sidebar-brand>
+</div>
       <CCloseButton class="d-lg-none" dark @click="sidebar.toggleVisible()" />
     </CSidebarHeader>
     <AppSidebarNav />

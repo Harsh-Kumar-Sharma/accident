@@ -10,12 +10,10 @@ const createvehicleCategory = catchAsync(async (req, res) => {
 // get all users
 const getvehicleCategorys = catchAsync(async (req, res) => {
     const { page } = req.query;
-    const getData = await vehicleCategory.getvehicleCategorys(page?page:1);
+    const getData = await vehicleCategory.getvehicleCategory(page?page:1);
     res.status(200).json({
       status: 'success',
-      data: {
-        getData,
-      },
+      data:getData,
     });
   });
   

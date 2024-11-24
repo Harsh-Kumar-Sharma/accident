@@ -16,7 +16,7 @@ router.use('/reason',reasonOfAccident);
 router.use('/location/zone',locationZoneRoute);
 router.use('/user',userRoute);
 router.use('/sourceOfInformation',sourceOfInformationRoute);
-router.use('/timeOfDayRoute',timeOfDayRoute);
+router.use('/timeOfDay',timeOfDayRoute);
 router.use('/vehicleCategory',vehicleCategoryRoute);
 router.use('/vehicleType',vehicleTypeRoute);
 

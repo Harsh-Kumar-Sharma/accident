@@ -1,21 +1,19 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const {VehicleTypeService} = require('../services')
+const {vehicleTypeService} = require('../services')
 
 const createVehicleType = catchAsync(async (req, res) => {
- const data = await VehicleTypeService.createVehicleType(req.body);
+ const data = await vehicleTypeService.createVehicleType(req.body);
   res.status(httpStatus.OK).send(data);
 });
 
 // get all users
 const getVehicleTypes = catchAsync(async (req, res) => {
     const { page } = req.query;
-    const getData = await VehicleTypeService.getVehicleTypes(page?page:1);
+    const getData = await vehicleTypeService.getvehicleType(page?page:1);
     res.status(200).json({
       status: 'success',
-      data: {
-        getData,
-      },
+      data:getData,
     });
   });
   
@@ -23,19 +21,17 @@ const getVehicleTypes = catchAsync(async (req, res) => {
   
   // update user
   const updateVehicleType = catchAsync(async (req, res) => {
-    const updatedVehicleType = await VehicleTypeService.updateVehicleType(req.params.id, req.body);
+    const updatedVehicleType = await vehicleTypeService.updateVehicleType(req.params.id, req.body);
     res.status(200).json({
       status: 'success',
-      data: {
-        VehicleType: updatedVehicleType,
-      },
+      data: updatedVehicleType,
     });
   });
   
   // delete VehicleType
   const deleteVehicleType = catchAsync(async (req, res) => {
     const VehicleTypeId = req.params.id;
-    const deletedVehicleType = await VehicleTypeService.deleteVehicleType(VehicleTypeId);
+    const deletedVehicleType = await vehicleTypeService.deleteVehicleType(VehicleTypeId);
     res.status(200).json({
       status: 'success',
       data: {

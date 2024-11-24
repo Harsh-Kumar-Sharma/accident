@@ -3,19 +3,19 @@ const { db } = require('../models');
 
 const createvehicleCategory= async (payload) => {
   // Pre-validation
-  const existsUser = await db.vehicle_types.findOne({
+  const existsUser = await db.vehicle_category.findOne({
     where: {
-        vehicle_type: payload.vehicleType,
+        vehicle_category: payload.vehicleCategory,
     },raw:true
   });
 
   if (existsUser) {
-    throw new Error('vehicle type  already exists with the same type');
+    throw new Error('vehicle category already exists with the same name');
   }
 
-  // Create  vehicle_types
-   await db.vehicle_types.create({
-    vehicle_types : payload.vehicleType
+  // Create  vehicle_category
+   await db.vehicle_category.create({
+    vehicle_category : payload.vehicleCategory,
   });
 
   return true
@@ -24,34 +24,36 @@ const createvehicleCategory= async (payload) => {
 const getvehicleCategory= async (page) => {
   const limit = 50;
   const offset = (page - 1) * limit;
-  const getvehicleCategory= await db.vehicle_types.findAll({
+  const getvehicleCategory= await db.vehicle_category.findAll({
     limit,
     offset,
   });
-  return getvehicleType;
+  return getvehicleCategory;
 };
 
 
 // update User
 const updatevehicleCategory= async (id, payload) => {
-  const vehicleCategory= await db.vehicle_types.findOne({ where: { id } });
-  if (!vehicleType) {
-    throw new Error('vehicleCategorynot found');
+  const vehicleCategory= await db.vehicle_category.findOne({ where: { id } });
+  if (!vehicleCategory) {
+    throw new Error('vehicleCategory not found');
   }
- await db.vehicle_types.update({vehicle_type:payload.vehicleType},{where:{id:id}})
+ await db.vehicle_category.update({
+  vehicle_category : payload.vehicleCategory,
+},{where:{id:id}})
   
-  return user;
+  return true;
 };
 
 // delete  User
 const deletevehicleCategory= async (id) => {
-  const data = await db.vehicle_types.findOne({ where: { id: id } });
+  const data = await db.vehicle_category.findOne({ where: { id: id } });
   if (!data) {
-    throw new Error('vehicle_type not found');
+    throw new Error('vehicle_category not found');
   }
 
   // Delete from vehicle_types
-  await db.vehicle_types.destroy({ where: { id: id } });
+  await db.vehicle_category.destroy({ where: { id: id } });
 
  
   return { message: 'deleted successfully' };

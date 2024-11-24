@@ -1,5 +1,5 @@
 <script setup>
-import avatar from '@/assets/images/avatars/8.jpg';
+import avatar from '@/assets/images/avatars/blank.jpeg';
 import { userPinaStore } from '@/stores/auth';
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';

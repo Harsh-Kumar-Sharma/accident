@@ -15,7 +15,7 @@ const createVehicleType = async (payload) => {
 
   // Create  vehicle_types
    await db.vehicle_types.create({
-    vehicle_types : payload.vehicleType
+    vehicle_type : payload.vehicleType
   });
 
   return true
@@ -40,7 +40,7 @@ const updateVehicleType = async (id, payload) => {
   }
  await db.vehicle_types.update({vehicle_type:payload.vehicleType},{where:{id:id}})
   
-  return user;
+  return true;
 };
 
 // delete  User

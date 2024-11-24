@@ -12,9 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       vehicle_category:{
         type: DataTypes.STRING,
-      },
-      vehicle_type: {
-        type: DataTypes.STRING,
       }
     },
     {

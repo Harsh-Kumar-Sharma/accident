@@ -1,38 +1,54 @@
 <template>
-  <div class="wrapper min-vh-100 d-flex flex-row align-items-center">
+  <div class="wrapper min-vh-100 d-flex flex-column justify-content-center align-items-center">
+    <!-- Background Video -->
+    <div class="video-background">
+      <!-- <video autoplay loop muted>
+        <source src="@/assets/videos/login-background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video> -->
+    </div>
+
     <CContainer>
       <CRow class="justify-content-center">
-        <CCol :md="8">
+        <CCol :md="6">
           <CCardGroup>
             <CCard class="p-4">
-              <CCardBody>
-                <CForm>
-                  <h1>Login</h1>
-                  <p class="text-body-secondary">Sign In to your account</p>
-                  <CInputGroup class="mb-3">
-                    <CInputGroupText>
-                      <CIcon icon="cil-user" />
-                    </CInputGroupText>
-                    <CFormInput placeholder="Username" autocomplete="username" v-model="username" />
-                  </CInputGroup>
-                  <CInputGroup class="mb-4">
-                    <CInputGroupText>
-                      <CIcon icon="cil-lock-locked" />
-                    </CInputGroupText>
-                    <CFormInput type="password" placeholder="Password" autocomplete="current-password"
-                      v-model="password" />
-                  </CInputGroup>
-                  <CRow>
-                    <CCol :xs="6">
-                      <CButton color="primary" @click="handleSubmit" class="px-4"> Login </CButton>
-                    </CCol>
-                    <CCol :xs="6" class="text-right">
-                      <CButton color="link" class="px-0">
-                        Forgot password?
-                      </CButton>
-                    </CCol>
-                  </CRow>
-                </CForm>
+              <CCardBody class="d-flex flex-column align-items-center">
+                <!-- Logo Section -->
+                <div class="logo-container mb-4">
+                  <img src="@/assets/images/logo.png" alt="SIMS Logo" class="logo-img" />
+                </div>
+                <!-- Company Name -->
+                <h2 class="text-center mb-2">Smart Incident Management System (SIMS)</h2>
+
+                <p class="text-center text-body-secondary">Sign In to your account</p>
+
+                <!-- Username Input -->
+                <CInputGroup class="mb-3">
+                  <CInputGroupText>
+                    <CIcon icon="cil-user" />
+                  </CInputGroupText>
+                  <CFormInput placeholder="Username" autocomplete="username" v-model="username" />
+                </CInputGroup>
+
+                <!-- Password Input -->
+                <CInputGroup class="mb-4">
+                  <CInputGroupText>
+                    <CIcon icon="cil-lock-locked" />
+                  </CInputGroupText>
+                  <CFormInput type="password" placeholder="Password" autocomplete="current-password"
+                    v-model="password" />
+                </CInputGroup>
+
+                <!-- Login Button -->
+                <CRow>
+                  <CCol :xs="6">
+                    <CButton color="primary" @click="handleSubmit" class="px-4">Login</CButton>
+                  </CCol>
+                </CRow>
+
+                <!-- Error Message (if any) -->
+                <p v-if="error" class="text-danger mt-2">{{ error }}</p>
               </CCardBody>
             </CCard>
           </CCardGroup>
@@ -63,7 +79,7 @@ export default {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "You are login successfully",
+          title: "You have logged in successfully",
           showConfirmButton: false,
           timer: 1500
         });
@@ -71,7 +87,7 @@ export default {
         Swal.fire({
           position: "top-end",
           icon: "error",
-          title: "Something is wrong to login",
+          title: "Login failed, please try again",
           showConfirmButton: false,
           timer: 1500
         });
@@ -79,18 +95,86 @@ export default {
       }
     };
 
-    const handleLogout = () => {
-      authStore.logout();
-    };
-
-
     return {
       username,
       password,
       error,
       handleSubmit,
-      handleLogout,
     };
   },
 };
 </script>
+
+<style scoped>
+.wrapper {
+  position: relative;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Send the video behind content */
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-img {
+  width: 80px;
+  height: auto;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #007bff;
+  text-align: center;
+}
+
+p.text-body-secondary {
+  font-size: 16px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-danger {
+  font-size: 14px;
+}
+
+.ccard-body {
+  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 2rem;
+}
+
+h2, p {
+  color: #333;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+p.text-danger {
+  color: red;
+}
+</style>

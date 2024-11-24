@@ -1,6 +1,6 @@
 const { db, sequelize } = require('../models');
+const {convertTo24HourFormat} =require('./TimeOfDay.service')
 
-const data = require('./accident');
 
 const insertAccidentData = async () => {
   const headers = [
@@ -80,11 +80,37 @@ const insertAccidentData = async () => {
 };
 
 const createAccident = async(body)=>{
-console.log(body);
+
+  
+  const payload = {
+    incident_id: body.incidentId,
+    accident_date: body.accidentDate,
+    accident_time: convertTo24HourFormat(body.accidentTime),
+    location: body.location,
+    direction: body.direction,
+    primary_vehicle: body.primaryVehicle,
+    secondary_vehicle: body.secondaryVehicle,
+    third_vehicle: body.thirdVehicle,
+    source_of_information: body.sourceOfInformation,
+    no_of_person_involve_in_accident: body.personInvolveInAccident,
+    fatal_injury: body.fatalInjury,
+    major_injury: body.majorInjury,
+    minor_injury: body.minorInjury,
+    no_injury: body.noInjury,
+    rpv_response_time:convertTo24HourFormat(body.rpvResponseTime),
+    ambulance_response_time: convertTo24HourFormat(body.ambulanceResponseTime),
+    recovery_response_time: convertTo24HourFormat(body.recoveryResponseTime),
+    reason_of_accidents: body.reasonOfAccident,
+  }
+
+  await db.accident_data.create(payload);
+
+  return true;
+
 }
 
 const getAccidentData= async(body,page) => {
-  const limit = 10;
+  const limit = 50;
   const offset = (page - 1) * limit;
   const data = await db.accident_data.findAll({
     limit,

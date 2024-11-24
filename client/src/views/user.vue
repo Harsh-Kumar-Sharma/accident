@@ -4,7 +4,7 @@
       <div class="page-title-box d-flex align-items-center justify-content-between">
         <h4 class="mb-0 font-size-18">Users Management</h4>
         <button class="btn btn-primary" @click="reset(),openModal = true" type="button">
-          <i class="fas fa-plus"></i> Add New User
+          <CIcon :icon="icon.cilUserPlus" size="lg"/> Add New User
         </button>
       </div>
     </div>
@@ -45,11 +45,10 @@
 
     <template #Action="{ item }">
       <div class="row">
-        <div class="col-5 d-flex justify-content-center">
-          <CButton size="sm" @click="editUser(item)" color="info">Edit</CButton>
-        </div>
-        <div class="col-5 d-flex justify-content-center">
-          <CButton size="sm" color="danger" @click="deleteUser(item.id)" class="ms-1">Delete</CButton>
+        <div class="col-10">
+          <CButton size="sm" @click="editUser(item)" color="info"><CIcon :icon="icon.cilPenAlt" size="lg"/>Edit</CButton>
+        
+          <CButton size="sm" color="danger" @click="deleteUser(item.id)" class="ms-1"><CIcon :icon="icon.cilTrash" size="lg"/>Delete</CButton>
         </div>
       </div>
     </template>
@@ -200,6 +199,8 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { BASE_URL, API_ROUTES} from '@/constants/config.js'
 import Swal from 'sweetalert2'
+ import { CIcon } from '@coreui/icons-vue';
+    import * as icon from '@coreui/icons';
 const details = ref([])
 const openModal = ref(false)
 const userPayload = ref({})

@@ -14,16 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       start_time: {
-        type: DataTypes.STRING,
+        type: DataTypes.TIME,
       },
       end_time: {
-        type: DataTypes.STRING,
-      },
-      value_from: {
-        type: DataTypes.FLOAT,
-      },
-      value_to: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.TIME,
       }
     },
     {

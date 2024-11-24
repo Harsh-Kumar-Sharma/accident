@@ -31,6 +31,12 @@ export default [
   },
   {
     component: 'CNavItem',
+    name: 'Search Accident',
+    to: '/search-accident',
+    icon: 'cil-cursor',
+  },
+  {
+    component: 'CNavItem',
     name: 'User Management',
     to: '/user',
     icon: 'cil-user',
@@ -44,27 +50,27 @@ export default [
       {
         component: 'CNavItem',
         name: 'Source Of Information',
-        to: '/settings/source_of_information',
+        to: '/source_of_information',
       },
       {
         component: 'CNavItem',
         name: 'Reasons Of Accidents',
-        to: '/settings/reasons_of_accidents',
+        to: '/reasons_of_accidents',
       },
       {
         component: 'CNavItem',
         name: 'time_of_day',
-        to: '/settings/time_of_day',
+        to: '/time_of_day',
       },
       {
         component: 'CNavItem',
         name: 'Vehicle Category',
-        to: '/settings/vehicle_category',
+        to: '/vehicle_category',
       },
       {
         component: 'CNavItem',
         name: 'Vehicle Type',
-        to: '/settings/vehicle_type',
+        to: '/vehicle_type',
       }
     ],
   },

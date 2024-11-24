@@ -7,3 +7,6 @@ module.exports.userService = require('./user.service');
 module.exports.accidentService = require('./accident.service')
 module.exports.vehicleTypeService = require('./VehicleType.service');
 module.exports.vehicleCategory = require('./VehicleCategory.service')
+module.exports.timeOfDay = require('./TimeOfDay.service');
+module.exports.reasonOfAccident = require('./reasonOfAccident.service');
+module.exports.sourceOfInformation = require('./sourceOfInformation.service');

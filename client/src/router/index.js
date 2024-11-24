@@ -39,6 +39,14 @@ const routes = [
           ),
       },
       {
+        path: '/search-accident',
+        name: 'Search Accident',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/data-entry/searchData.vue'
+          ),
+      },
+      {
         path: '/response',
         name: 'RESPONSE',
         component: () =>
@@ -71,54 +79,45 @@ const routes = [
           ),
       },
       {
-        path: '/settings',
+        path: '/source_of_information', // Matches /settings/source_of_information
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ '@/views/settings/SourceOfInformation.vue'
           ),
-        name: 'Settings',
-        children: [
-          {
-            path: 'source_of_information', // Matches /settings/source_of_information
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ '@/views/settings/SourceOfInformation.vue'
-              ),
-            name: 'Source Of Information',
-          },
-          {
-            path: 'reasons_of_accidents', // Matches /settings/reasons_of_accidents
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ '@/views/settings/ReasonsOfAccidents.vue'
-              ),
-            name: 'Reasons Of Accidents',
-          },
-          {
-            path: 'time_of_day', // Matches /settings/time_of_day
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ '@/views/settings/TimeOfDay.vue'
-              ),
-            name: 'Time Of Day',
-          },
-          {
-            path: 'vehicle_category', // Matches /settings/vehicle_category
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleCategory.vue'
-              ),
-            name: 'Vehicle Category',
-          },
-          {
-            path: 'vehicle_type', // Matches /settings/vehicle_type
-            component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleType.vue'
-              ),
-            name: 'Vehicle Type',
-          },
-        ],
+        name: 'Source Of Information',
+      },
+      {
+        path: '/reasons_of_accidents', // Matches /settings/reasons_of_accidents
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/settings/ReasonsOfAccidents.vue'
+          ),
+        name: 'Reasons Of Accidents',
+      },
+      
+      {
+        path: '/time_of_day', // Matches /settings/time_of_day
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/settings/TimeOfDay.vue'
+          ),
+        name: 'Time Of Day',
+      },
+      {
+        path: '/vehicle_category', // Matches /settings/vehicle_category
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleCategory.vue'
+          ),
+        name: 'Vehicle Category',
+      },
+      {
+        path: '/vehicle_type', // Matches /settings/vehicle_type
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/settings/VehicleType.vue'
+          ),
+        name: 'Vehicle Type',
       },
       {
         path: '/:pathMatch(.*)*', // Use pathMatch to handle all undefined routes
