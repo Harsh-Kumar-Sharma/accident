@@ -1,5 +1,5 @@
 const { db, sequelize } = require('../models');
-const {convertTo24HourFormat} =require('./TimeOfDay.service')
+const { convertTo24HourFormat } = require('./TimeOfDay.service')
 
 
 const insertAccidentData = async () => {
@@ -59,7 +59,7 @@ const insertAccidentData = async () => {
       major_injury: val.MAJOR_INJURY,
       minor_injury: val.MINOR_INJURY,
       no_injury: val.NO_INJURY,
-      rpv_response_time: ( val.RPV_RESPONSE_TIME === 'NA' ? null : val.RPV_RESPONSE_TIME),
+      rpv_response_time: (val.RPV_RESPONSE_TIME === 'NA' ? null : val.RPV_RESPONSE_TIME),
       ambulance_response_time: val.AMBULANCE_RESPONSE_TIME,
       recovery_response_time: val.RECOVERY_RESPONSE_TIME,
       reason_of_accidents: val.REASON_OF_ACCIDENTS,
@@ -79,9 +79,9 @@ const insertAccidentData = async () => {
   return true;
 };
 
-const createAccident = async(body)=>{
+const createAccident = async (body) => {
 
-  
+
   const payload = {
     incident_id: body.incidentId,
     accident_date: body.accidentDate,
@@ -97,7 +97,7 @@ const createAccident = async(body)=>{
     major_injury: body.majorInjury,
     minor_injury: body.minorInjury,
     no_injury: body.noInjury,
-    rpv_response_time:convertTo24HourFormat(body.rpvResponseTime),
+    rpv_response_time: convertTo24HourFormat(body.rpvResponseTime),
     ambulance_response_time: convertTo24HourFormat(body.ambulanceResponseTime),
     recovery_response_time: convertTo24HourFormat(body.recoveryResponseTime),
     reason_of_accidents: body.reasonOfAccident,
@@ -109,66 +109,66 @@ const createAccident = async(body)=>{
 
 }
 
-const getAccidentData= async(body,page) => {
+const getAccidentData = async (body, page) => {
   const limit = 50;
   const offset = (page - 1) * limit;
   const data = await db.accident_data.findAll({
     limit,
     offset,
   });
-return data;
+  return data;
 }
 
-const getDataforDashboard = async (body)=>{
- 
-      let condition = '';
-      const currentYear = new Date().getFullYear();
-      const startDate = `${currentYear}-01-01`; // Start of the jan 1st
-      const endDate = `${currentYear}-12-31`; // Current year's December 31st
-  
-      if (body.fromDate && body.toDate && !String(body.fromDate).includes('1970') && !String(body.toDate).includes('1970')) {
-        condition = ` accident_date BETWEEN '${body.fromDate}' AND '${body.toDate}'`;
-      } else {
-        condition = ` accident_date BETWEEN '${startDate}' AND '${endDate}'`;
-      }
-      if (body.reasonOfAccident && body.reasonOfAccident !== 'null'){
-        condition += `AND reason_of_accidents = '${body.reasonOfAccident}'`;
-      }
-      if (body.locationZone && body.locationZone !== 'null'){
-        condition += `AND location_zone = '${body.locationZone}'`;
-      }
-      const query = `
+const getDataforDashboard = async (body) => {
+
+  let condition = '';
+  const currentYear = new Date().getFullYear();
+  const startDate = `${currentYear}-01-01`; // Start of the jan 1st
+  const endDate = `${currentYear}-12-31`; // Current year's December 31st
+
+  if (body.fromDate && body.toDate && !String(body.fromDate).includes('1970') && !String(body.toDate).includes('1970')) {
+    condition = ` accident_date BETWEEN '${body.fromDate}' AND '${body.toDate}'`;
+  } else {
+    condition = ` accident_date BETWEEN '${startDate}' AND '${endDate}'`;
+  }
+  if (body.reasonOfAccident && body.reasonOfAccident !== 'null') {
+    condition += `AND reason_of_accidents = '${body.reasonOfAccident}'`;
+  }
+  if (body.locationZone && body.locationZone !== 'null') {
+    condition += `AND location_zone = '${body.locationZone}'`;
+  }
+  const query = `
         SELECT
           DATE_FORMAT(accident_date, '%m') AS accident_month,
           SUM(CASE WHEN fatal_injury THEN fatal_injury ELSE 0 END) AS fatal_injury,
           SUM(CASE WHEN major_injury THEN major_injury ELSE 0 END) AS major_injury,
           SUM(CASE WHEN minor_injury THEN minor_injury ELSE 0 END) AS minor_injury
-        FROM accident.accident_data
+        FROM accident_data
         WHERE ${condition}
         GROUP BY accident_month;
       `;
-      // Execute the query using sequelize.query or your preferred database client
-      const sumOfInjury = await sequelize.query(query);
+  // Execute the query using sequelize.query or your preferred database client
+  const sumOfInjury = await sequelize.query(query);
 
-      const query1 = `SELECT
+  const query1 = `SELECT
       DATE_FORMAT(accident_date, '%m') AS accident_month,
       Count(*) AS CountData
-    FROM accident.accident_data
+    FROM accident_data
     WHERE ${condition}
     GROUP BY accident_month;`
 
-    const countAccident = await sequelize.query(query1);
+  const countAccident = await sequelize.query(query1);
 
-    const query2 =`SELECT
+  const query2 = `SELECT
     SUM(CASE WHEN fatal_injury THEN fatal_injury ELSE 0 END) AS fatal_injury,
     SUM(CASE WHEN major_injury THEN major_injury ELSE 0 END) AS major_injury,
     SUM(CASE WHEN minor_injury THEN minor_injury ELSE 0 END) AS minor_injury,
     Count(*) AS total_accident
-  FROM accident.accident_data WHERE ${condition}`
+  FROM accident_data WHERE ${condition}`
 
   const cardData = await sequelize.query(query2);
-  
-      return {sumInjury:sumOfInjury[0],CountData:countAccident[0],cardData:cardData[0]};
+
+  return { sumInjury: sumOfInjury[0], CountData: countAccident[0], cardData: cardData[0] };
 }
 
 

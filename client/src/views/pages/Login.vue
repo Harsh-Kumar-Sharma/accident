@@ -2,18 +2,18 @@
   <div class="wrapper min-vh-100 d-flex flex-column justify-content-center align-items-center">
     <!-- Background Video -->
     <div class="video-background">
-      <!-- <video autoplay loop muted>
-        <source src="@/assets/videos/login-background.mp4" type="video/mp4" />
+      <video autoplay loop muted>
+        <source src="../../assets/login.mp4" type="video/mp4" />
         Your browser does not support the video tag.
-      </video> -->
+      </video>
     </div>
 
     <CContainer>
       <CRow class="justify-content-center">
         <CCol :md="6">
           <CCardGroup>
-            <CCard class="p-4">
-              <CCardBody class="d-flex flex-column align-items-center">
+            <CCard class="transparent-card p-4">
+              <CCardBody class="d-flex flex-column align-items-center fw-light">
                 <!-- Logo Section -->
                 <div class="logo-container mb-4">
                   <img src="@/assets/images/logo.png" alt="SIMS Logo" class="logo-img" />
@@ -61,6 +61,8 @@
 <script>
 import { userPinaStore } from '@/stores/auth';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios'
+import { BASE_URL, API_ROUTES } from '../../constants/config'
 import { ref } from 'vue';
 import Swal from 'sweetalert2'
 
@@ -74,7 +76,12 @@ export default {
 
     const handleSubmit = async () => {
       try {
-        await authStore.login({ username: username.value, password: password.value });
+        const res = await axios.post(`${BASE_URL}${API_ROUTES.AUTH.LOGIN}`, {
+          username: username.value,
+          password: password.value,
+        })
+
+        await authStore.saveAuthUser(res.data);
         router.push('/dashboard');
         Swal.fire({
           position: "top-end",
@@ -84,6 +91,7 @@ export default {
           timer: 1500
         });
       } catch (err) {
+        console.log(err)
         Swal.fire({
           position: "top-end",
           icon: "error",
@@ -91,7 +99,7 @@ export default {
           showConfirmButton: false,
           timer: 1500
         });
-        error.value = err.message;
+        error.value = err.response ? err.response.data.message : 'invalid Login';
       }
     };
 
@@ -108,7 +116,8 @@ export default {
 <style scoped>
 .wrapper {
   position: relative;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
+  /* Full viewport height */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -122,7 +131,8 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: -1; /* Send the video behind content */
+  z-index: -1;
+  /* Send the video behind content */
 }
 
 .logo-container {
@@ -156,13 +166,15 @@ p.text-body-secondary {
 }
 
 .ccard-body {
-  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.85);
+  /* Semi-transparent background */
   box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 2rem;
 }
 
-h2, p {
+h2,
+p {
   color: #333;
 }
 
@@ -176,5 +188,14 @@ h2, p {
 
 p.text-danger {
   color: red;
+}
+
+.transparent-card {
+  background-color: rgba(255, 255, 255, 0.7);
+  /* Set transparent background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Optional: lighter shadow */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  /* Optional: softer border */
 }
 </style>

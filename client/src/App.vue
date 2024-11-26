@@ -1,17 +1,20 @@
 <script setup>
 import { onBeforeMount } from 'vue'
 import { useColorModes } from '@coreui/vue-pro'
-
+import { userPinaStore } from '@/stores/auth';
 import { useThemeStore } from '@/stores/theme.js'
 
 const { isColorModeSet, setColorMode } = useColorModes(
   'coreui-free-vue-admin-template-theme',
 )
 const currentTheme = useThemeStore()
+const authStore = userPinaStore();
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
   const urlParams = new URLSearchParams(window.location.href.split('?')[1])
   let theme = urlParams.get('theme')
+
+  await authStore.session();
 
   if (theme !== null && theme.match(/^[A-Za-z0-9\s]+/)) {
     theme = theme.match(/^[A-Za-z0-9\s]+/)[0]
