@@ -172,6 +172,11 @@ const getDataforDashboard = async (body) => {
 }
 
 
+const makeCompleteEntry = async () => {
+  const allData = await db.accident_data.findAll({});
+
+}
+
 module.exports = {
   insertAccidentData,
   createAccident,
