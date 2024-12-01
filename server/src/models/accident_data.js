@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
       third_vehicle: {
         type: DataTypes.STRING(45),
       },
+      forth_vehicle:{
+        type: DataTypes.STRING(45),
+      },
       source_of_information: {
         type: DataTypes.STRING(45),
       },
@@ -71,9 +74,9 @@ module.exports = (sequelize, DataTypes) => {
       location_zone: {
         type: DataTypes.STRING(45),
       },
-      accident_time_in_value: {
-        type: DataTypes.FLOAT,
-      },
+      // accident_time_in_value: {
+      //   type: DataTypes.FLOAT,
+      // },
       times_of_the_day: {
         type: DataTypes.STRING(45),
       },
@@ -92,6 +95,10 @@ module.exports = (sequelize, DataTypes) => {
       blackspot_location_value: {
         type: DataTypes.STRING(45),
       },
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,  // Corrected the spelling of 'defaultValue'
+      }
     },
     {
       sequelize,

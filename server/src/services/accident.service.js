@@ -1,7 +1,7 @@
 const { db, sequelize } = require('../models');
 const { convertTo24HourFormat } = require('./TimeOfDay.service')
-
-
+const logger = require('../config/logger')
+const data = require('./accident')
 const insertAccidentData = async () => {
   const headers = [
     'SL.NO.',
@@ -73,7 +73,6 @@ const insertAccidentData = async () => {
       unknown: val.UNKNOWN,
       blackspot_location_value: val.Blackspot_Loaction_Value,
     }
-    console.log(payload)
     await db.accident_data.create(payload);
   }
   return true;
@@ -172,14 +171,117 @@ const getDataforDashboard = async (body) => {
 }
 
 
-const makeCompleteEntry = async () => {
-  const allData = await db.accident_data.findAll({});
 
+// Helper functions
+const timeToMinutes = (time) => {
+  const [h, m, s] = time.split(':').map(Number);
+  return h * 60 + m + s / 60;
+};
+
+const processLocation = (location) => {
+  const [base, offset] = location.split('+').map(Number);
+  return { 
+    locationValue: base + offset / 1000,
+    locationZone: `KM ${Math.floor(base / 10) * 10}-${Math.floor(base / 10) * 10 + 10}`
+  };
+};
+
+// Function to determine time of day
+const determineTimeOfDay = (time, ranges) => {
+  const timeInMinutes = timeToMinutes(time);
+  for (const { start_time, end_time, time_of_day } of ranges) {
+    const start = timeToMinutes(start_time);
+    const end = timeToMinutes(end_time);
+
+    if (start <= timeInMinutes && timeInMinutes < end || (start > end && (timeInMinutes >= start || timeInMinutes < end))) {
+      return time_of_day;
+    }
+  }
+  return 'Unknown';
+};
+
+const countVehicleCategory = async (data) => {
+  // Initialize the result object for counting categories
+  const obj = {
+    light: 0,
+    heavy: 0,
+    non_tollable: 0,
+    unknown: 0,
+  };
+
+  // Database data representing vehicle types and their categories
+  const vehicleCategoryDb = await db.vehicle_category.findAll({});
+
+  // Build a map from vehicle_type to vehicle_category
+  const vehicleCategoryMap = vehicleCategoryDb.reduce((acc, { vehicle_type, vehicle_category }) => {
+    acc[vehicle_type] = vehicle_category.toLowerCase().replace("-", "_"); // Normalize category names
+    return acc;
+  }, {});
+
+  // Function to increase count based on vehicle type
+  const increaseCount = (vehicleType) => {
+    const category = vehicleCategoryMap[vehicleType] || 'unknown';
+    obj[category] += 1;
+  };
+
+  // Check all vehicle fields in the data and increase count accordingly
+  if (data.primary_vehicle) increaseCount(data.primary_vehicle);
+  if (data.secondary_vehicle) increaseCount(data.secondary_vehicle);
+  if (data.third_vehicle) increaseCount(data.third_vehicle);
+  if (data.forth_vehicle) increaseCount(data.forth_vehicle);
+
+  return obj;
+};
+
+
+// Function to complete fields
+const completeFields = async (accident) => {
+  const location = accident.location?.includes('+') ? processLocation(accident.location) : {};
+  const timeOfDay = await db.time_of_day.findAll({});
+  const times_of_the_day = determineTimeOfDay(accident.accident_time, timeOfDay);
+
+  const count = await countVehicleCategory(accident);
+
+  return {
+    ...accident,
+    location_value: location.locationValue || accident.location_value,
+    location_zone: location.locationZone || accident.location_zone,
+    times_of_the_day,
+    light: count.light ,
+    heavy: count.heavy ,
+    non_tollable: count.non_tollable ,
+    unknown: count.unknown ,
+    blackspot_location_value: accident.blackspot_location_value || '',
+    status: true
+  };
+};
+
+// Function to process and update records
+const makeCompleteEntry = async () => {
+  try{
+  const allData = await db.accident_data.findAll({ where: { status: false } });
+
+  if (allData.length === 0) return logger.info('No incomplete records found.');
+
+  for (const accident of allData) {
+    const updatedAccident = await completeFields(accident);
+    await db.accident_data.update(updatedAccident, { where: { id: accident.id } });
+    logger.info(`Record with incident_id ${accident.incident_id} completed and updated.`);
+  }
+
+  logger.info('All records processed.');
 }
+catch(err){
+  logger.error(err)
+}
+};
+
+const intervalId = setInterval(makeCompleteEntry, 5000);
 
 module.exports = {
   insertAccidentData,
   createAccident,
   getAccidentData,
-  getDataforDashboard
+  getDataforDashboard,
+  intervalId
 };

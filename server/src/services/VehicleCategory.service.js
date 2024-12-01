@@ -5,17 +5,18 @@ const createvehicleCategory= async (payload) => {
   // Pre-validation
   const existsUser = await db.vehicle_category.findOne({
     where: {
-        vehicle_category: payload.vehicleCategory,
+        vehicle_type: payload.vehicleType,
     },raw:true
   });
 
   if (existsUser) {
-    throw new Error('vehicle category already exists with the same name');
+    throw new Error('vehicle Type already exists with the same name');
   }
 
   // Create  vehicle_category
    await db.vehicle_category.create({
     vehicle_category : payload.vehicleCategory,
+    vehicle_type : payload.vehicleType,
   });
 
   return true
@@ -40,6 +41,7 @@ const updatevehicleCategory= async (id, payload) => {
   }
  await db.vehicle_category.update({
   vehicle_category : payload.vehicleCategory,
+  vehicle_type : payload.vehicleType,
 },{where:{id:id}})
   
   return true;

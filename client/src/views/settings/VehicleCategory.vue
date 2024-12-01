@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <div class="page-title-box d-flex align-items-center justify-content-between">
-        <h4 class="mb-0 font-size-18">vechicle Category</h4>
+        <h4 class="mb-0 font-size-18">Vechicle Category</h4>
         <button class="btn btn-primary" @click="reset(),openModal = true" type="button">
           <CIcon :icon="icon.cilPlaylistAdd" size="lg"/> Add New vechicle Category
         </button>
@@ -65,6 +65,15 @@
           <div class="col-12">
             <CFormInput label="vehicle Category" v-model="payload.vehicleCategory" required />
           </div>
+        <div class="col-12">
+         <CForm>
+              <CFormSelect
+                label="Vehicle Type"
+                v-model="payload.vehicleType"
+                :options="vehicleOptions"
+              />
+            </CForm>
+        </div>
         </div>
       </CForm>
     </CModalBody>
@@ -94,6 +103,17 @@
           <div class="col-12">
             <CFormInput label="vehicle Category" v-model="payload.vehicleCategory" required />
           </div>
+
+            <div class="col-12">
+         <CForm>
+              <CFormSelect
+                label="Vehicle Type"
+                v-model="payload.vehicleType"
+                :options="vehicleOptions"
+              />
+            </CForm>
+        </div>
+        
         </div>
       </CForm>
     </CModalBody>
@@ -117,15 +137,19 @@ const payload = ref({})
 const openEditModal=ref(false)
 const allRoles = ref([]);
 const vechicleCategoryId = ref(null)
-
+const vehicleOptions = ref([{ label: 'Select menu', value: '' }]);
 const columns = [
   {
     key: 'id',
-    _style: { width: '20%' },
+    _style: { width: '10%' },
   },
   {
     key: 'vehicle_category',
-    _style: { width: '20%' },
+    _style: { width: '10%' },
+  },
+    {
+    key: 'vehicle_type',
+    _style: { width: '10%' },
   },
    {
     key: 'Action',
@@ -198,7 +222,8 @@ const editVehicleCategory = async (data)=>{
   openEditModal.value=true;
   vechicleCategoryId.value= data.id;
   payload.value={
-    vehicleCategory:data.vehicle_category
+    vehicleCategory:data.vehicle_category,
+    vehicleType:data.vehicle_type
   }
 }
 
@@ -218,6 +243,21 @@ const getVehicleCategory = async ()=>{
   }
 }
 
+// Fetch vehicle types
+const getVehicleType = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}${API_ROUTES.vehicleType.get}`);
+    vehicleOptions.value = [{ label: 'Select menu', value: '' }]; // Clear previous options
+    res.data.data.forEach(val => {
+      vehicleOptions.value.push({ label: val.vehicle_type, value: val.vehicle_type });
+    });
+  } catch (error) {
+    Swal.fire({ icon: 'error', title: 'Error', text: error.response.data.message });
+  }
+};
+
 getVehicleCategory();
+
+getVehicleType();
 
 </script>

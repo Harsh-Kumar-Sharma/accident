@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12">
       <div class="page-title-box d-flex align-items-center justify-content-between">
-        <h4 class="mb-0 font-size-18">vechicle Type</h4>
+        <h4 class="mb-0 font-size-18">Vechicle Type</h4>
         <button class="btn btn-primary" @click="reset(),openModal = true" type="button">
          <CIcon :icon="icon.cilPlaylistAdd" size="lg"/> Add New vechicle Type
         </button>
@@ -110,8 +110,8 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { BASE_URL, API_ROUTES} from '@/constants/config.js'
 import Swal from 'sweetalert2'
- import { CIcon } from '@coreui/icons-vue';
-    import * as icon from '@coreui/icons';
+import { CIcon } from '@coreui/icons-vue';
+import * as icon from '@coreui/icons';
 const details = ref([])
 const openModal = ref(false)
 const payload = ref({})
@@ -130,7 +130,7 @@ const columns = [
   },
    {
     key: 'Action',
-    _style: { width: '8%' },
+    _style: { width: '10%' },
   }
 ]
 const allVehicleType = ref([])
