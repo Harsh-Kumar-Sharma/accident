@@ -39,35 +39,19 @@ const routes = [
           ),
       },
       {
+        path: '/accident/edit/:id',
+        name: 'Edit Accident',
+        component: () =>
+          import(
+            /* webpackChunkName: "dashboard" */ '@/views/data-entry/editData.vue'
+          ),
+      },
+      {
         path: '/search-accident',
         name: 'Search Accident',
         component: () =>
           import(
             /* webpackChunkName: "dashboard" */ '@/views/data-entry/searchData.vue'
-          ),
-      },
-      {
-        path: '/response',
-        name: 'RESPONSE',
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/response/Dashboard.vue'
-          ),
-      },
-      {
-        path: '/heat-map',
-        name: 'HEAT MAP',
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/heat-map/Dashboard.vue'
-          ),
-      },
-      {
-        path: '/reason',
-        name: 'REASON',
-        component: () =>
-          import(
-            /* webpackChunkName: "dashboard" */ '@/views/reason/Dashboard.vue'
           ),
       },
       {

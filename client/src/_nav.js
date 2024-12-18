@@ -7,25 +7,7 @@ export default [
   },
   {
     component: 'CNavItem',
-    name: 'HEAT MAP',
-    to: '/heat-map',
-    icon: 'cil-speedometer',
-  },
-  {
-    component: 'CNavItem',
-    name: 'REASON',
-    to: '/reason',
-    icon: 'cil-speedometer',
-  },
-  {
-    component: 'CNavItem',
-    name: 'RESPONSE',
-    to: '/response',
-    icon: 'cil-speedometer',
-  },
-  {
-    component: 'CNavItem',
-    name: 'Accident ENTRY',
+    name: 'Create Accident',
     to: '/data-entry',
     icon: 'cil-notes',
   },

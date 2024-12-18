@@ -26,9 +26,21 @@ const getDashboardData = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(data);
 });
 
+const getAccidentById = catchAsync(async (req, res) => {
+  const data = await accidentService.getAccidentById(req.params.id);
+  res.status(httpStatus.OK).send(data);
+});
+
+const updateAccident= catchAsync(async (req, res) => {
+  const data = await accidentService.updateAccident(req.body,req.params.id);
+  res.status(httpStatus.OK).send(data);
+});
+
 module.exports = {
     insertAccident,
     createAccident,
     getAllAccident,
-    getDashboardData
+    getDashboardData,
+    getAccidentById,
+    updateAccident
 };

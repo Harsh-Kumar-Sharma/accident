@@ -1,7 +1,8 @@
 const { db, sequelize } = require('../models');
-const { convertTo24HourFormat } = require('./TimeOfDay.service')
-const logger = require('../config/logger')
-const data = require('./accident')
+const { convertTo24HourFormat } = require('./TimeOfDay.service');
+const logger = require('../config/logger');
+const data = require('./accident');
+const {Op} = require('sequelize');
 const insertAccidentData = async () => {
   const headers = [
     'SL.NO.',
@@ -108,13 +109,78 @@ const createAccident = async (body) => {
 
 }
 
+const updateAccident = async (body,id) => {
+
+  const data = await db.accident_data.findOne({
+    where: {id:id},
+  });
+
+  if(!data){
+    throw new Error('Invalid Id');
+  }
+
+  const payload = {
+    incident_id: body.incidentId,
+    accident_date: body.accidentDate,
+    accident_time: convertTo24HourFormat(body.accidentTime),
+    location: body.location,
+    direction: body.direction,
+    primary_vehicle: body.primaryVehicle,
+    secondary_vehicle: body.secondaryVehicle,
+    third_vehicle: body.thirdVehicle,
+    source_of_information: body.sourceOfInformation,
+    no_of_person_involve_in_accident: body.personInvolveInAccident,
+    fatal_injury: body.fatalInjury,
+    major_injury: body.majorInjury,
+    minor_injury: body.minorInjury,
+    no_injury: body.noInjury,
+    rpv_response_time: convertTo24HourFormat(body.rpvResponseTime),
+    ambulance_response_time: convertTo24HourFormat(body.ambulanceResponseTime),
+    recovery_response_time: convertTo24HourFormat(body.recoveryResponseTime),
+    reason_of_accidents: body.reasonOfAccident,
+    status:0
+  }
+
+  await db.accident_data.update(payload,{where:{id:id}});
+
+  return true;
+
+}
+
 const getAccidentData = async (body, page) => {
+  
   const limit = 50;
   const offset = (page - 1) * limit;
+
+  const whereCondition = {};
+  
+  // If 'accidentDateFrom' and 'accidentDateTo' are provided in the body, apply the date range filter
+  if (body.accidentDateFrom && body.accidentDateTo) {
+    whereCondition.accident_date = {
+      [Op.between]: [new Date(body.accidentDateFrom), new Date(body.accidentDateTo)]
+    };
+  }
+
   const data = await db.accident_data.findAll({
+    where: whereCondition,
     limit,
     offset,
   });
+
+  return data;
+}
+
+const getAccidentById= async (id)=>{
+
+  const data = await db.accident_data.findOne({
+    where: {id:id},
+  });
+
+  if(!data){
+    throw new Error('Invalid Id');
+  }
+
+
   return data;
 }
 
@@ -167,7 +233,88 @@ const getDataforDashboard = async (body) => {
 
   const cardData = await sequelize.query(query2);
 
-  return { sumInjury: sumOfInjury[0], CountData: countAccident[0], cardData: cardData[0] };
+  const query3 = `SELECT 
+    COALESCE(reason_of_accidents, 'Unknown') AS reason_of_accidents,
+    COUNT(*) AS accident_count
+FROM accident_data WHERE ${condition}
+GROUP BY COALESCE(reason_of_accidents, 'Unknown')
+ORDER BY accident_count DESC;`
+
+  const reasonOfAccidents = await sequelize.query(query3);
+
+  const query4 = `SELECT source_of_information, 
+  COUNT(*) AS accident_count,
+    (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM accident_data WHERE ${condition})) AS accident_percentage
+FROM accident_data WHERE ${condition}
+GROUP BY source_of_information
+ORDER BY accident_count DESC;
+`
+
+  const sourceOfInformation = await sequelize.query(query4);
+
+  const query5 = `SELECT direction, 
+   COUNT(*) AS accident_count,
+    (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM accident_data WHERE ${condition})) AS accident_percentage
+FROM accident_data WHERE ${condition}
+GROUP BY direction
+ORDER BY accident_count DESC;
+`
+
+  const direction = await sequelize.query(query5);
+
+
+  const query6 = `SELECT times_of_the_day, 
+   COUNT(*) AS accident_count,
+    (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM accident_data WHERE ${condition})) AS accident_percentage
+FROM accident_data WHERE ${condition}
+GROUP BY times_of_the_day
+ORDER BY accident_count DESC;
+`
+
+  const timesOfTheDay = await sequelize.query(query6);
+
+
+  const query7 = `SELECT 
+    location_zone, 
+    COUNT(*) AS accident_count,
+    (COUNT(*) * 100.0 / (SELECT COUNT(*) FROM accident_data WHERE ${condition})) AS accident_percentage
+FROM 
+    accident_data WHERE ${condition}
+GROUP BY 
+    location_zone
+ORDER BY 
+    accident_count DESC;
+`
+
+  const locationZone = await sequelize.query(query7);
+
+  const query8 = `SELECT
+    EXTRACT(MONTH FROM accident_date) AS month,
+    AVG(rpv_response_time) AS avg_rpv_response_time,
+    AVG(ambulance_response_time) AS avg_ambulance_response_time,
+    AVG(recovery_response_time) AS avg_recovery_response_time
+FROM
+    accident_data WHERE ${condition}
+GROUP BY
+    EXTRACT(MONTH FROM accident_date)
+ORDER BY
+    month;
+`
+
+const avgResponseTime = await sequelize.query(query8);
+
+  
+
+
+  return { sumInjury: sumOfInjury[0], 
+    CountData: countAccident[0], 
+    cardData: cardData[0][0],
+    reasonOfAccidents:reasonOfAccidents[0],
+    sourceOfInformation:sourceOfInformation[0],
+    direction:direction[0],
+    timesOfTheDay:timesOfTheDay[0],
+    locationZone:locationZone[0],
+    avgResponseTime:avgResponseTime[0] };
 }
 
 
@@ -283,5 +430,8 @@ module.exports = {
   createAccident,
   getAccidentData,
   getDataforDashboard,
-  intervalId
+  intervalId,
+  getAccidentById,
+  updateAccident
+  
 };

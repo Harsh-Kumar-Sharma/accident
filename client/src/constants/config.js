@@ -57,6 +57,8 @@ export const API_ROUTES = {
   },
   accident:{
     create:'/api/accident/create',
-     getAccident:'/api/accident/getAll'
+     getAccident:'/api/accident/getAll',
+     getAccidentById:(id)=>{return `/api/accident/${id}`},
+     update:(id)=>{return `/api/accident/${id}`}
   }
 };

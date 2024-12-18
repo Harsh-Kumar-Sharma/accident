@@ -37,9 +37,9 @@
     <template #Action="{ item }">
       <div class="row" >
          <div class="col-8 d-flex justify-content-center">
-          <CButton size="sm" @click="editVehicleType(item)" color="info"><CIcon :icon="icon.cilPenAlt" size="lg"/>Edit</CButton>
+          <CButton size="sm" @click="edit(item.id)" color="info"><CIcon :icon="icon.cilPenAlt" size="lg"/>Edit</CButton>
        
-          <CButton size="sm" color="danger" @click="deleteVehicleType(item.id)" class="ms-1"> <CIcon :icon="icon.cilTrash" size="lg"/>Delete</CButton>
+          <!-- <CButton size="sm" color="danger" @click="deleteVehicleType(item.id)" class="ms-1"> <CIcon :icon="icon.cilTrash" size="lg"/>Delete</CButton> -->
         </div>
       </div>
     </template>
@@ -80,7 +80,7 @@
       </CForm>
     </CModalBody>
     <CModalFooter>
-      <CButton color="primary" @click="saveVehicleType">Search</CButton>
+      <CButton color="primary" @click="getAllAccident">Search</CButton>
       <CButton color="danger" @click="reset">Reset</CButton>
     </CModalFooter>
   </CModal>
@@ -124,7 +124,14 @@ const columns = [
 ]
 const allAccidentData = ref([])
 
+import { useRouter } from 'vue-router'; // Import the useRouter hook
 
+// Get the router instance
+const router = useRouter();
+
+const edit =(id)=>{
+ router.push(`/accident/edit/${id}`);
+}
 
 
 
@@ -136,7 +143,7 @@ const reset = ()=>{
 
 const getAllAccident = async ()=>{
   try{
-    const res = await axios.post(`${BASE_URL}${API_ROUTES.accident.getAccident}/${page.value}`)
+    const res = await axios.post(`${BASE_URL}${API_ROUTES.accident.getAccident}/${page.value}`,payload.value)
  allAccidentData.value=res.data;
   }
   catch(error){
