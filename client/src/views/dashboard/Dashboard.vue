@@ -279,7 +279,7 @@ const Search = async () => {
       datasets: [
         {
           label: "Monthly Count",
-          backgroundColor: "blue",
+          backgroundColor: "#55679C",
           data: res.data.CountData.map((item) => item.CountData),
         },
       ],
@@ -384,12 +384,12 @@ const Search = async () => {
         },
         {
           label: "Accident Percentage",
-          backgroundColor: "#28a745", // Green color for accident percentage bars
+          backgroundColor: "#6A669D", // Green color for accident percentage bars
           data: res.data.timesOfTheDay.map((item) =>
             parseFloat(item.accident_percentage)
           ), // Accident percentage data
           fill: false,
-          borderColor: "#218838", // Darker green for border
+          borderColor: "#1C325B", // Darker green for border
           borderWidth: 2,
           yAxisID: "percentageAxis", // Use a secondary Y-axis for percentage
         },
