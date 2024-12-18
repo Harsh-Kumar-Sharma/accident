@@ -436,7 +436,7 @@ const getReasonOfAccident = async () => {
 
 onMounted(async () => {
   locationZoneData.value = [
-    { label: "Select menu", value: "" }
+    { label: "Select menu", value: "" },
     { label: "KM 0-10", value: "KM 0-10" },
     { label: "KM 10-20", value: "KM 10-20" },
     { label: "KM 20-30", value: "KM 20-30" },
